@@ -1,0 +1,212 @@
+---
+alwaysApply: true
+---
+
+---
+
+description: Project rules for a LinkedIn content planning and scheduling platform
+alwaysApply: true
+---
+
+# Project Context
+
+This project is a platform for planning and organizing LinkedIn content.
+
+The purpose of the platform is to help users:
+
+- Plan what they want to post on LinkedIn
+- Decide when content should be published
+- Organize post ideas
+- Draft LinkedIn posts
+- See upcoming posts in a calendar or timeline
+- Track the status of each post
+- Keep an overview of their LinkedIn content strategy
+
+# Core Data Model
+
+A LinkedIn post should normally contain:
+
+- title
+- content
+- scheduledDate
+- status
+- category
+- notes
+- createdAt
+- updatedAt
+
+Possible post statuses:
+
+- idea
+- draft
+- ready
+- scheduled
+- published
+
+Do not invent additional fields unless they are needed for a feature.
+
+# Main Features
+
+The platform should support:
+
+- Creating a new LinkedIn post
+- Editing a post
+- Deleting a post
+- Saving posts as drafts
+- Setting a publication date
+- Changing post status
+- Viewing upcoming posts
+- Viewing posts in a calendar
+- Filtering posts by status
+- Filtering posts by date
+- Organizing content ideas
+
+# UI Principles
+
+The interface should feel:
+
+- Simple
+- Calm
+- Professional
+- Modern
+- Easy to scan
+
+Prioritize usability over decorative design.
+
+Avoid unnecessary complexity.
+
+Use clear spacing and visual hierarchy.
+
+Important actions should be easy to find.
+
+# Dashboard
+
+The dashboard should give the user a quick overview of their LinkedIn content.
+
+Prefer showing:
+
+- Upcoming posts
+- Draft posts
+- Scheduled posts
+- Recently published posts
+- A simple calendar or timeline
+- Quick action for creating a new post
+
+# Post Creation
+
+Creating a LinkedIn post should be fast.
+
+The user should be able to enter:
+
+- A title for internal organization
+- The LinkedIn post content
+- A planned publication date
+- A status
+- Optional notes or category
+
+Do not require unnecessary fields.
+
+# Calendar
+
+The calendar should help users understand when they plan to publish content.
+
+Posts should be clearly associated with their scheduled date.
+
+The user should be able to identify:
+
+- What is planned
+- What is ready
+- What has already been published
+
+# LinkedIn Content
+
+When generating example LinkedIn content:
+
+- Keep the writing natural
+- Avoid excessive emojis
+- Avoid fake engagement bait
+- Avoid overly corporate language
+- Prefer short readable paragraphs
+- Use clear hooks when appropriate
+- Keep posts useful and relevant
+- Do not invent personal experiences for the user
+
+# Code Style
+
+- Use TypeScript
+- Prefer React functional components
+- Keep components focused and reasonably small
+- Extract reusable components when useful
+- Avoid unnecessary abstractions
+- Use descriptive variable and function names
+- Prefer async/await
+- Keep business logic separate from presentation logic when practical
+
+# React / Next.js
+
+When using Next.js:
+
+- Prefer the App Router
+- Use Server Components by default
+- Add "use client" only when client-side state, effects, browser APIs, or event handlers are required
+- Keep API keys and secrets server-side
+- Never expose secret environment variables to the client
+
+# Styling
+
+- Use Tailwind CSS
+- Prefer existing design patterns in the project
+- Keep styling consistent
+- Avoid inline styles unless necessary
+- Prefer responsive layouts
+- Ensure forms and buttons have clear hover, focus, and disabled states
+
+# Forms
+
+Forms should:
+
+- Have clear labels or placeholders
+- Validate required fields
+- Prevent accidental duplicate submissions
+- Show loading states when submitting
+- Show useful errors when something fails
+
+# Dates
+
+Dates are important in this project.
+
+Always:
+
+- Store dates in a consistent format
+- Be careful with time zones
+- Separate display formatting from stored date values
+- Avoid ambiguous date formats where possible
+
+# Safety
+
+Never:
+
+- Expose API keys
+- Put secrets in client components
+- Delete user content without an explicit user action
+- Silently overwrite existing content
+
+# When Editing Existing Code
+
+Before making changes:
+
+1. Read the existing implementation.
+2. Follow existing patterns where reasonable.
+3. Make the smallest change that solves the problem.
+4. Avoid rewriting unrelated code.
+5. Preserve existing functionality unless the task explicitly changes it.
+
+# Priorities
+
+When several solutions are possible, prioritize:
+
+1. Correctness
+2. Simplicity
+3. Good user experience
+4. Maintainability
+5. Performance
