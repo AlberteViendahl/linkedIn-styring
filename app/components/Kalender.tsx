@@ -151,12 +151,12 @@ export default function Kalender() {
   }
 
   return (
-    <div className="min-h-screen w-full mx-4 mb-5 rounded-xl bg-pink-100 px-5 py-6">
+    <div className="min-h-screen w-full md:mx-4 mx-1 mb-5 rounded-xl bg-pink-100 px-2 md:px-5 py-6">
       {/* Måned navigation */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={forrigeMaaned}
-          className="rounded-lg border border-pink-300 bg-white px-4 py-2 shadow hover:bg-pink-50"
+          className="rounded-lg border border-pink-300 bg-white px-3 py-1 md:px-4 md:py-2 shadow hover:bg-pink-50"
         >
           ←
         </button>
@@ -167,7 +167,7 @@ export default function Kalender() {
 
         <button
           onClick={naesteMaaned}
-          className="rounded-lg border border-pink-300 bg-white px-4 py-2 shadow hover:bg-pink-50"
+          className="rounded-lg border border-pink-300 bg-white px-3 py-1 md:px-4 md:py-2 shadow hover:bg-pink-50"
         >
           →
         </button>
@@ -186,9 +186,10 @@ export default function Kalender() {
         ].map((ugedag) => (
           <div
             key={ugedag}
-            className="p-2 text-center font-semibold text-gray-600"
+            className="p-2 text-m text-center font-semibold text-gray-600"
           >
-            {ugedag}
+            <span className="md:hidden">{ugedag.charAt(0)}</span>
+            <span className="hidden md:inline">{ugedag}</span>
           </div>
         ))}
       </div>
@@ -199,7 +200,7 @@ export default function Kalender() {
         {Array.from({ length: foersteDag }).map((_, index) => (
           <div
             key={`tom-${index}`}
-            className="min-h-30 rounded-xl border border-pink-200 bg-pink-200"
+            className="md:min-h-30 min-w-12 rounded-xl border border-pink-200 bg-pink-200"
           />
         ))}
 
@@ -215,14 +216,14 @@ export default function Kalender() {
             <div
               key={dag}
               onClick={() => setValgtDag(dag)}
-              className="relative min-h-30 min-w-30 cursor-pointer rounded-xl border border-pink-300 bg-white p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md"
+              className="relative lg:min-h-30 lg:min-w-30 sm:min-h-30 sm:min-w-20 min-h-20 min-w-12 cursor-pointer rounded-xl border border-pink-300 bg-white p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md"
             >
-              <div className="mb-3 text-lg font-bold">{dag}</div>
+              <div className="mb-3 text-sm md:text-lg font-bold">{dag}</div>
 
               {dagensPost && (
                 <div className="flex items-center gap-2">
                   <div
-                    className={`h-3 w-3 shrink-0 rounded-full ${
+                    className={`h-3 w-3 shrink-0 rounded-full  ${
                       dagensPost.status === "draft"
                         ? "bg-red-500"
                         : dagensPost.status === "klar"
@@ -231,11 +232,11 @@ export default function Kalender() {
                     }`}
                   />
 
-                  <p className="truncate text-sm font-medium">
+                  <p className="hidden gap-3 truncate text-m font-medium sm:block">
                     {dagensPost.title}
                   </p>
 
-                  <div className="absolute bottom-2 right-2 text-xs text-gray-500">
+                  <div className="absolute bottom-2 right-2 text-sm text-gray-500">
                     {dagensPost.ansvarlig}
                   </div>
                 </div>
@@ -266,7 +267,7 @@ export default function Kalender() {
 
             <form
               onSubmit={handleCreate}
-              className="grid min-h-0 flex-1 grid-cols-3 gap-6 overflow-hidden px-6 py-6"
+              className="grid min-h-0 flex-1 xl:grid-cols-3 lg:gap-6 gap-2 overflow-hidden md:px-6 md:py-6 px-2 py-2"
             >
               {/* KOLONNE 1 - TEKST */}
               <div className="col-span-1 flex min-h-0 flex-col overflow-hidden">
@@ -281,7 +282,7 @@ export default function Kalender() {
                           event.target.value as "draft" | "klar" | "postet",
                         )
                       }
-                      className={`rounded-lg border p-2 text-sm ${
+                      className={`rounded-lg border md:p-2 text-sm ${
                         status === "draft"
                           ? "border-red-300 bg-red-500 text-white"
                           : status === "klar"
@@ -302,7 +303,7 @@ export default function Kalender() {
                           event.target.value as "Anton" | "Alberte" | "Begge",
                         )
                       }
-                      className="rounded-lg border border-pink-300 p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
+                      className="rounded-lg border border-pink-300 p-1 md:p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
                     >
                       <option value="Anton">Anton</option>
                       <option value="Alberte">Alberte</option>
@@ -324,12 +325,12 @@ export default function Kalender() {
                     placeholder="Beskrivelse"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
-                    className="min-h-40 flex-1 resize-none rounded-lg border border-pink-300 bg-white p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
+                    className="md:min-h-40 min-h-30 flex-1 resize-none rounded-lg border border-pink-300 bg-white p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
                   />
                 </div>
 
                 {/* Gem / slet opslag */}
-                <div className="flex shrink-0 items-center justify-between border-t border-pink-200 pt-4">
+                <div className="flex shrink-0 items-center justify-between pt-2 md:pt-4">
                   {error ? (
                     <p className="text-sm text-red-600">{error}</p>
                   ) : (
@@ -340,7 +341,7 @@ export default function Kalender() {
                     <button
                       type="submit"
                       disabled={isCreating}
-                      className="rounded-lg bg-emerald-700 px-4 py-2 text-sm text-white disabled:opacity-50"
+                      className="rounded-lg bg-emerald-700 p-1 md:px-4 md:py-2 text-sm text-white disabled:opacity-50"
                     >
                       {isCreating
                         ? "Gemmer..."
@@ -360,7 +361,7 @@ export default function Kalender() {
                           setSelectedImage([]);
                           setValgtDag(null);
                         }}
-                        className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white"
+                        className="rounded-lg bg-red-600 px-2 md:px-4 md:py-2 text-sm text-white"
                       >
                         Slet
                       </button>
@@ -370,12 +371,12 @@ export default function Kalender() {
               </div>
 
               {/* KOLONNE 2 - BILLEDER */}
-              <div className="col-span-1 flex min-h-0 flex-col overflow-hidden rounded-lg border border-pink-200 p-4">
+              <div className="col-span-1 flex min-h-0 flex-col overflow-hidden rounded-lg border border-pink-300 p-4">
                 {/* Billede header */}
                 <div className="mb-4 flex shrink-0 items-center justify-between">
                   <h3 className="font-semibold">Billeder</h3>
 
-                  <label className="cursor-pointer rounded-lg border border-pink-300 px-3 py-1.5 text-sm hover:bg-pink-50">
+                  <label className="cursor-pointer rounded-lg border border-pink-300 py-0.5 px-2 md:px-3 md:py-1.5 text-sm hover:bg-pink-50">
                     Vælg billeder
                     <input
                       className="hidden"
@@ -476,7 +477,7 @@ export default function Kalender() {
               </div>
 
               {/* KOLONNE 3 - CHAT */}
-              <div className="col-span-1 flex min-h-0 flex-col overflow-hidden rounded-lg border border-pink-300 bg-pink-50 p-4">
+              <div className="col-span-1 flex min-h-0 flex-col overflow-hidden rounded-lg border border-pink-300 bg-pink-50 p-1 lg:p-4">
                 <div className="mt-auto">
                   <Chat description={description} />
                 </div>

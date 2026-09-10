@@ -6,7 +6,7 @@ export default function DashboardPage() {
   return (
     <div>
       <Nav />
-      <div className="flex justify-center items-start">
+      <div className="grid gap-8 xl:grid-cols-2 m-2 lg:m-10">
         <Ideer />
         <Question />
       </div>

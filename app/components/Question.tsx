@@ -52,8 +52,8 @@ export default function Ideer() {
   }
 
   return (
-    <div className="w-170 m-10 rounded-lg border border-pink-300 bg-pink-100 p-4">
-      <h2 className="font-bold text-center mb-4">
+    <div className="w-full rounded-lg border border-pink-300 bg-pink-100 p-3 sm:p-4">
+      <h2 className="mb-4 text-center font-bold">
         Spørgsmål vi kan stille medarbejderne
       </h2>
 
@@ -63,20 +63,20 @@ export default function Ideer() {
           placeholder="Hovedspørgsmål"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          className="border rounded p-2  bg-white  border-pink-300 focus:border-2 focus:border-pink-500 focus:outline-none"
+          className="w-full rounded border border-pink-300 bg-white p-2 focus:border-2 focus:border-pink-500 focus:outline-none"
         />
 
         <textarea
           placeholder="Underspørgsmål"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          className="border rounded p-2 min-h-40 bg-white border-pink-300 focus:border-2 focus:border-pink-500 focus:outline-none"
+          className="min-h-32 w-full resize-none rounded border border-pink-300 bg-white p-2 focus:border-2 focus:border-pink-500 focus:outline-none sm:min-h-40"
         />
 
         <button
           type="submit"
           disabled={isCreating}
-          className="bg-emerald-700 w-20 text-white rounded p-2 disabled:opacity-50"
+          className="w-full rounded bg-emerald-700 p-2 text-white disabled:opacity-50 sm:w-20"
         >
           {isCreating ? "Opretter..." : "Opret"}
         </button>
@@ -86,56 +86,57 @@ export default function Ideer() {
         {questions?.map((question) => (
           <div
             key={question._id}
-            className="rounded-lg border border-pink-300 p-3  bg-white"
+            className="w-full rounded-lg border border-pink-300 bg-white p-3"
           >
             {editingId === question._id ? (
               <>
                 <input
                   value={editTitle}
                   onChange={(event) => setEditTitle(event.target.value)}
-                  className="mb-2 w-full text-sm rounded border border-pink-300 focus:border-2 focus:border-pink-500 focus:outline-none p-2 "
+                  className="mb-2 w-full rounded border border-pink-300 p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
                 />
 
                 <textarea
                   value={editDescription}
                   onChange={(event) => setEditDescription(event.target.value)}
-                  className="mb-2 w-full h-40 rounded border border-pink-300 focus:border-2 focus:border-pink-500 focus:outline-none p-2 text-sm "
+                  className="mb-2 h-32 w-full resize-none rounded border border-pink-300 p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none sm:h-40"
                 />
 
-                <button
-                  onClick={async () => {
-                    await updateQuestion({
-                      questionId: question._id,
-                      title: editTitle,
-                      description: editDescription.trim() || undefined,
-                    });
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={async () => {
+                      await updateQuestion({
+                        questionId: question._id,
+                        title: editTitle,
+                        description: editDescription.trim() || undefined,
+                      });
 
-                    setEditingId(null);
-                  }}
-                  className="mr-2 rounded text-sm bg-emerald-900 text-white px-3 py-1 "
-                >
-                  Gem
-                </button>
+                      setEditingId(null);
+                    }}
+                    className="rounded bg-emerald-900 px-3 py-1 text-sm text-white"
+                  >
+                    Gem
+                  </button>
 
-                <button
-                  onClick={() => setEditingId(null)}
-                  className="rounded border text-sm px-3 py-1 "
-                >
-                  Annuller
-                </button>
+                  <button
+                    onClick={() => setEditingId(null)}
+                    className="rounded border px-3 py-1 text-sm"
+                  >
+                    Annuller
+                  </button>
+                </div>
               </>
             ) : (
               <>
-                <h3 className="font-bold ">{question.title}</h3>
+                <h3 className="break-words font-bold">{question.title}</h3>
 
                 {question.description && (
-                  <p className="text-sm whitespace-pre-wrap text-gray-600 ">
-                    {/* // whitespace-pre-wrap laver formatering  */}
+                  <p className="break-words whitespace-pre-wrap text-sm text-gray-600">
                     {question.description}
                   </p>
                 )}
 
-                <div className="mt-3 flex justify-end gap-2">
+                <div className="mt-3 flex flex-wrap justify-end gap-2">
                   <button
                     onClick={() =>
                       startEditing(
@@ -144,7 +145,7 @@ export default function Ideer() {
                         question.description,
                       )
                     }
-                    className="rounded bg-gray-200 px-1 py-1 text-sm"
+                    className="rounded bg-gray-200 px-2 py-1 text-sm"
                   >
                     Rediger
                   </button>

@@ -60,7 +60,7 @@ export default function Chat({ description }: ChatProps) {
 
   return (
     <div className="w-full shrink-0">
-      <div className="ml-10 text-sm">
+      <div className="text-sm">
         {svar && (
           <div
             dangerouslySetInnerHTML={{
@@ -70,7 +70,7 @@ export default function Chat({ description }: ChatProps) {
         )}
       </div>
 
-      <div className="m-5 flex gap-3">
+      <div className="lg:m-5 flex lg:gap-3 gap-1">
         <input
           className="flex-1 rounded-lg border border-pink-300 bg-white px-3 py-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
           value={besked}
@@ -89,7 +89,7 @@ export default function Chat({ description }: ChatProps) {
 
         <button
           type="button"
-          className="rounded-lg bg-pink-400 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-lg bg-pink-400 px-2 lg:px-4 md:py-2 text-sm font-medium text-white disabled:opacity-50"
           onClick={sendBesked}
           disabled={isLoading || !besked.trim()}
         >
