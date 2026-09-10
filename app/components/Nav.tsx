@@ -8,7 +8,7 @@ export default function Nav() {
 
   return (
     <div className="flex justify-around">
-      <Link href="/" className="text-xl font-bold m-5 ">
+      <Link href="/" className="text-xl font-bold sm:m-5 m-2 ">
         LinkedIn Styring
       </Link>
 

@@ -200,7 +200,7 @@ export default function Kalender() {
         {Array.from({ length: foersteDag }).map((_, index) => (
           <div
             key={`tom-${index}`}
-            className="md:min-h-30 min-w-12 rounded-xl border border-pink-200 bg-pink-200"
+            className="md:min-h-30 min-w-13 rounded-xl border border-pink-200 bg-pink-200"
           />
         ))}
 
@@ -216,14 +216,14 @@ export default function Kalender() {
             <div
               key={dag}
               onClick={() => setValgtDag(dag)}
-              className="relative lg:min-h-30 lg:min-w-30 sm:min-h-30 sm:min-w-20 min-h-20 min-w-12 cursor-pointer rounded-xl border border-pink-300 bg-white p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md"
+              className="relative lg:min-h-30 lg:min-w-30 sm:min-h-30 sm:min-w-20 min-h-20 min-w-13 cursor-pointer rounded-xl border border-pink-300 bg-white p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md"
             >
               <div className="mb-3 text-sm md:text-lg font-bold">{dag}</div>
 
               {dagensPost && (
                 <div className="flex items-center gap-2">
                   <div
-                    className={`h-3 w-3 shrink-0 rounded-full  ${
+                    className={`relative sm:right-0 -right-3 -top-2 sm:top-0 h-3 w-3 shrink-0 rounded-full ${
                       dagensPost.status === "draft"
                         ? "bg-red-500"
                         : dagensPost.status === "klar"
@@ -236,7 +236,7 @@ export default function Kalender() {
                     {dagensPost.title}
                   </p>
 
-                  <div className="absolute bottom-2 right-2 text-sm text-gray-500">
+                  <div className="absolute bottom-2 text-center right-1 text-sm text-gray-500">
                     {dagensPost.ansvarlig}
                   </div>
                 </div>
