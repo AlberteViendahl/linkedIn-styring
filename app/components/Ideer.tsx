@@ -87,7 +87,7 @@ export default function Ideer() {
                 <input
                   value={editTitle}
                   onChange={(event) => setEditTitle(event.target.value)}
-                  className="mb-2 w-full  rounded border border-pink-300 p-2 text-sm focus:border-2 focus:border-pink-500 focus:outline-none"
+                  className="mb-2 w-full  rounded border border-pink-300 p-2 text-sm focus:border-pink-500 focus:outline-none"
                 />
 
                 <textarea
