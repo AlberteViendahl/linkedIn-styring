@@ -64,7 +64,7 @@ export default function Ideer() {
           placeholder="Beskrivelse"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          className="min-h-32 w-full resize-none rounded border border-pink-300 bg-white p-2 focus:border-2 focus:border-pink-500 focus:outline-none sm:min-h-40"
+          className="min-h-32 w-full resize-none rounded border border-pink-300 bg-white p-2  focus:border-pink-500 focus:outline-none sm:min-h-40"
         />
 
         <button
