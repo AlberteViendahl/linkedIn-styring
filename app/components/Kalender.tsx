@@ -10,6 +10,8 @@ export default function Kalender() {
   const [dato, setDato] = useState(new Date());
   const [valgtDag, setValgtDag] = useState<number | null>(null);
 
+  const iDag = new Date();
+
   // Error
   const [error, setError] = useState("");
 
@@ -22,7 +24,9 @@ export default function Kalender() {
   const [selectedImage, setSelectedImage] = useState<File[]>([]);
 
   // Status
-  const [status, setStatus] = useState<"draft" | "klar" | "postet">("draft");
+  const [status, setStatus] = useState<
+    "draft" | "klar" | "planlagt" | "postet"
+  >("draft");
 
   // Ansvarlig
   const [ansvarlig, setAnsvarlig] = useState<"Anton" | "Alberte" | "Begge">(
@@ -111,9 +115,8 @@ export default function Kalender() {
 
     setError("");
     setIsCreating(true);
-    setSelectedImage([]);
 
-    // til image - [] for at gøre så man kan gemme mere end 1
+    // Upload billeder
     const storageIds = [];
 
     for (const image of selectedImage) {
@@ -141,9 +144,10 @@ export default function Kalender() {
         date: postDate,
         status: status,
         ansvarlig: ansvarlig,
-        images: storageIds,
+        images: [...(valgtPost?.images ?? []), ...storageIds],
       });
 
+      setSelectedImage([]);
       setValgtDag(null);
     } finally {
       setIsCreating(false);
@@ -189,6 +193,7 @@ export default function Kalender() {
             className="p-2 text-m text-center font-semibold text-gray-600"
           >
             <span className="md:hidden">{ugedag.charAt(0)}</span>
+
             <span className="hidden md:inline">{ugedag}</span>
           </div>
         ))}
@@ -208,6 +213,12 @@ export default function Kalender() {
         {Array.from({ length: antalDage }).map((_, index) => {
           const dag = index + 1;
 
+          // Tjek om dagen er i dag
+          const erIDag =
+            dag === iDag.getDate() &&
+            maaned === iDag.getMonth() &&
+            aar === iDag.getFullYear();
+
           const dagensDato = `${aar}-${maaned + 1}-${dag}`;
 
           const dagensPost = posts?.find((post) => post.date === dagensDato);
@@ -216,7 +227,9 @@ export default function Kalender() {
             <div
               key={dag}
               onClick={() => setValgtDag(dag)}
-              className="relative lg:min-h-30 lg:min-w-30 sm:min-h-30 sm:min-w-20 min-h-20 min-w-13 cursor-pointer rounded-xl border border-pink-300 bg-white p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md"
+              className={`relative lg:min-h-30 lg:min-w-30 sm:min-h-30 sm:min-w-20 min-h-20 min-w-13 cursor-pointer rounded-xl border p-2 shadow-sm transition hover:bg-pink-50 hover:shadow-md ${
+                erIDag ? "text-pink-500 bg-white" : "border-pink-300 bg-white"
+              }`}
             >
               <div className="mb-3 text-sm md:text-lg font-bold">{dag}</div>
 
@@ -228,7 +241,9 @@ export default function Kalender() {
                         ? "bg-red-500"
                         : dagensPost.status === "klar"
                           ? "bg-amber-400"
-                          : "bg-green-600"
+                          : dagensPost.status === "planlagt"
+                            ? "bg-blue-400"
+                            : "bg-green-400"
                     }`}
                   />
 
@@ -287,11 +302,14 @@ export default function Kalender() {
                           ? "border-red-300 bg-red-500 text-white"
                           : status === "klar"
                             ? "border-amber-300 bg-amber-400 text-black"
-                            : "border-green-300 bg-green-600 text-white"
+                            : status === "planlagt"
+                              ? "border-blue-200 bg-blue-400 text-white"
+                              : "border-green-700 bg-green-400 text-white"
                       }`}
                     >
                       <option value="draft">Draft</option>
                       <option value="klar">Klar</option>
+                      <option value="planlagt">Planlagt</option>
                       <option value="postet">Postet</option>
                     </select>
 

@@ -50,6 +50,7 @@ export const savePost = mutation({
     status: v.union(
       v.literal("draft"),
       v.literal("klar"),
+      v.literal("planlagt"),
       v.literal("postet")
     ),
 
