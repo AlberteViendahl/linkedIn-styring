@@ -8,6 +8,11 @@ export default function Nav() {
   const pathname = usePathname();
   const { signOut } = useAuthActions();
 
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = "/Login";
+  };
+
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 sm:justify-around sm:px-0 sm:py-0">
       <Link href="/" className="text-base font-bold sm:m-5 sm:text-xl">
@@ -43,8 +48,8 @@ export default function Nav() {
         </Link>
 
         <button
-          onClick={() => void signOut()}
           className="ml-1 rounded-lg border border-pink-300 bg-white px-2 py-1.5 text-sm shadow hover:bg-pink-50 sm:ml-3 sm:px-3 sm:py-2 sm:text-base"
+          onClick={handleSignOut}
         >
           Log ud
         </button>

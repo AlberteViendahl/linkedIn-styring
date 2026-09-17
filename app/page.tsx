@@ -1,4 +1,4 @@
-/* import Kalender from "./components/Kalender";
+import Kalender from "./components/Kalender";
 import Nav from "./components/Nav";
 
 export default function Home() {
@@ -10,8 +10,8 @@ export default function Home() {
       </div>
     </div>
   );
-} */
-"use client";
+}
+/* "use client";
 
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 
@@ -37,3 +37,4 @@ export default function Home() {
     </main>
   );
 }
+ */

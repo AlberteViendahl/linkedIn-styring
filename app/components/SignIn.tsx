@@ -3,158 +3,75 @@ import { useState } from "react";
 
 export function SignIn() {
   const { signIn } = useAuthActions();
-
-  const [step, setStep] = useState<"signIn" | "signUp" | { email: string }>(
-    "signIn",
-  );
-
-  // Fejlbeskeder
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
+  const [step, setStep] = useState<"signUp" | "signIn">("signIn");
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      {step === "signIn" || step === "signUp" ? (
-        <form
-          key="sign-in-form"
-          className="flex flex-col items-center gap-4 w-80 p-6 border-2 border-pink-300 bg-pink-100 rounded-2xl"
-          onSubmit={(event) => {
-            event.preventDefault();
+    <div className="flex min-h-screen items-center justify-center bg-pink-100 px-4">
+      <form
+        className="grid w-full max-w-sm gap-5 rounded-2xl border border-pink-300 bg-white p-8 shadow-lg"
+        onSubmit={(event) => {
+          event.preventDefault();
 
-            // Nulstil gamle fejl
-            setEmailError("");
-            setPasswordError("");
+          const formData = new FormData(event.currentTarget);
+          void signIn("password", formData);
+        }}
+      >
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">
+            {step === "signIn" ? "LinkedIn Styring" : "Opret bruger"}
+          </h1>
 
-            const formData = new FormData(event.currentTarget);
-
-            const email = formData.get("email") as string;
-            const password = formData.get("password") as string;
-
-            let hasError = false;
-
-            // Tjek email
-            if (!email.trim()) {
-              setEmailError("Du skal indtaste en email.");
-              hasError = true;
-            }
-
-            // Tjek password
-            if (!password.trim()) {
-              setPasswordError("Du skal indtaste en adgangskode.");
-              hasError = true;
-            } else if (password.length < 8) {
-              setPasswordError("Adgangskoden skal være mindst 8 tegn.");
-              hasError = true;
-            }
-
-            // Stop hvis der er fejl
-            if (hasError) {
-              return;
-            }
-
-            void signIn("password", formData).then(() =>
-              setStep({
-                email: formData.get("email") as string,
-              }),
-            );
-          }}
-        >
-          <input
-            className="border-2 border-pink-300 p-2 rounded-2xl w-full bg-white"
-            name="email"
-            placeholder="Email"
-            type="email"
-          />
-
-          {emailError && (
-            <p className="text-red-500 text-sm w-full">{emailError}</p>
-          )}
-
-          <input
-            className="border-2 border-pink-300 p-2 rounded-2xl w-full bg-white"
-            name="password"
-            placeholder="Password"
-            type="password"
-          />
-
-          {passwordError && (
-            <p className="text-red-500 text-sm w-full">{passwordError}</p>
-          )}
-
-          <input name="flow" value={step} type="hidden" readOnly />
-
-          <button
-            className="border-2 border-pink-300 p-2 rounded-2xl w-28 bg-white hover:bg-pink-50"
-            type="submit"
-          >
-            {step === "signIn" ? "Sign in" : "Sign up"}
-          </button>
-
-          <button
-            className="border-2 border-pink-300 p-2 rounded-2xl bg-white hover:bg-pink-50"
-            type="button"
-            onClick={() => {
-              setEmailError("");
-              setPasswordError("");
-
-              setStep(step === "signIn" ? "signUp" : "signIn");
-            }}
-          >
-            {step === "signIn" ? "Sign up instead" : "Sign in instead"}
-          </button>
-        </form>
-      ) : (
-        <form
-          key="verification-form"
-          className="flex flex-col items-center gap-4 w-80 p-6 border-2 border-pink-300 bg-pink-100 rounded-2xl"
-          onSubmit={(event) => {
-            event.preventDefault();
-
-            const formData = new FormData(event.currentTarget);
-
-            void signIn("password", formData);
-          }}
-        >
-          <h2 className="text-xl font-bold">Bekræft din email</h2>
-
-          <p className="text-sm text-center">
-            Vi har sendt en kode til
-            <br />
-            <strong>{step.email}</strong>
+          <p className="mt-1 text-sm">
+            {step === "signIn" ? "Log ind på din konto" : "Opret en ny konto"}
           </p>
+        </div>
+
+        <div className="grid gap-2">
+          <label htmlFor="email" className="text-sm font-medium">
+            Email
+          </label>
 
           <input
-            className="border-2 border-pink-300 p-2 rounded-2xl w-full bg-white"
-            name="code"
-            placeholder="Code"
-            type="text"
+            id="email"
+            name="email"
+            placeholder="din@email.dk"
+            type="email"
+            className="w-full rounded-lg border border-pink-300 bg-white px-3 py-2 outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
           />
+        </div>
+
+        <div className="grid gap-2">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
 
           <input
-            name="flow"
-            type="hidden"
-            value="email-verification"
-            readOnly
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            type="password"
+            className="w-full rounded-lg border border-pink-300 bg-white px-3 py-2 outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-100"
           />
+        </div>
 
-          <input name="email" value={step.email} type="hidden" readOnly />
+        <input name="flow" type="hidden" value={step} />
 
-          <button
-            className="border-2 border-pink-300 p-2 rounded-2xl bg-white hover:bg-pink-50"
-            type="submit"
-          >
-            Continue
-          </button>
+        <button
+          className="rounded-lg border border-pink-300 bg-pink-500 text-white px-3 py-1 md:px-4 md:py-2 shadow hover:bg-pink-50 hover:text-black"
+          type="submit"
+        >
+          {step === "signIn" ? "Sign in" : "Sign up"}
+        </button>
 
-          <button
-            className="border-2 border-pink-300 p-2 rounded-2xl bg-white hover:bg-pink-50"
-            type="button"
-            onClick={() => setStep("signIn")}
-          >
-            Cancel
-          </button>
-        </form>
-      )}
+        <button
+          className="rounded-lg border border-pink-300 bg-white px-3 py-1 md:px-4 md:py-2 shadow hover:bg-pink-50"
+          type="button"
+          onClick={() => {
+            setStep(step === "signIn" ? "signUp" : "signIn");
+          }}
+        >
+          {step === "signIn" ? "Sign up instead" : "Sign in instead"}
+        </button>
+      </form>
     </div>
   );
 }
