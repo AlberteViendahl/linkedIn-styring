@@ -17,24 +17,26 @@ export const createQuestion = mutation({
 });
 
 //hent spørgsmålet fra convex så den kan vises i ui
-export const getQuestion = query({
-    args: {},
-  
-    handler: async (ctx) => {
-      return await ctx.db.query("question").collect();
-    },
-  });
+export const getQuestions = query({
+  args: {},
+
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("question")
+      .collect();
+  },
+});
 
   //så man kan redigerer i den
   export const updateQuestion = mutation({
     args: {
-        questionId: v.id("question"),
+      questionId: v.id("question"),
       title: v.string(),
       description: v.optional(v.string()),
     },
   
     handler: async (ctx, args) => {
-      await ctx.db.patch("question", args.questionId, {
+      await ctx.db.patch(args.questionId, {
         title: args.title,
         description: args.description,
       });

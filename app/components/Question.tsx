@@ -2,18 +2,19 @@
 
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useState, FormEvent } from "react";
 
-export default function Ideer() {
+export default function Question() {
   const createQuestion = useMutation(api.question.createQuestion);
-  const questions = useQuery(api.question.getQuestion);
+  const questions = useQuery(api.question.getQuestions);
   const updateQuestion = useMutation(api.question.updateQuestion);
   const deleteQuestion = useMutation(api.question.deleteQuestion);
 
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<Id<"question"> | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
 
@@ -42,7 +43,7 @@ export default function Ideer() {
   }
 
   function startEditing(
-    questionId: string,
+    questionId: Id<"question">,
     title: string,
     description?: string,
   ) {
@@ -83,7 +84,7 @@ export default function Ideer() {
       </form>
 
       <div className="mt-6 flex flex-col gap-3">
-        {questions?.map((question) => (
+        {questions?.map((question: Doc<"question">) => (
           <div
             key={question._id}
             className="w-full rounded-lg border border-pink-300 bg-white p-3"
@@ -128,10 +129,10 @@ export default function Ideer() {
               </>
             ) : (
               <>
-                <h3 className="break-words font-bold">{question.title}</h3>
+                <h3 className="wrap-break-words font-bold">{question.title}</h3>
 
                 {question.description && (
-                  <p className="break-words whitespace-pre-wrap text-sm text-gray-600">
+                  <p className="wrap-break-words whitespace-pre-wrap text-sm text-gray-600">
                     {question.description}
                   </p>
                 )}

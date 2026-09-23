@@ -1,16 +1,23 @@
+"use client";
+
+import { useQuery } from "convex/react";
+import { api } from "../convex/_generated/api";
+
 import Kalender from "./components/Kalender";
 import Nav from "./components/Nav";
+
+import GivePostAccess from "./components/GivePostAccess";
 
 export default function Home() {
   return (
     <div>
+      {/*      <GivePostAccess /> */}
       <Nav />
-      <div className="flex justify-center">
-        <Kalender />
-      </div>
+      <Kalender />
     </div>
   );
 }
+
 /* "use client";
 
 import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";

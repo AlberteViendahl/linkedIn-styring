@@ -3,7 +3,12 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
 import Chat from "@/app/components/Chat";
+
+type CalendarPost = Doc<"post"> & {
+  imageUrls: Array<string | null>;
+};
 
 export default function Kalender() {
   // Kalender
@@ -14,6 +19,7 @@ export default function Kalender() {
 
   // Error
   const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Formular
   const [isCreating, setIsCreating] = useState(false);
@@ -35,7 +41,7 @@ export default function Kalender() {
 
   // Convex
   const savePost = useMutation(api.post.savePost);
-  const posts = useQuery(api.post.getPosts);
+  const posts: CalendarPost[] | undefined = useQuery(api.post.getPosts);
   const deletePost = useMutation(api.post.deletePost);
   const generateUploadUrl = useMutation(api.post.generateUploadUrl);
   const deletePostImage = useMutation(api.post.deletePostImage);
@@ -101,7 +107,8 @@ export default function Kalender() {
     setSelectedImage([]);
     setValgtDag(null);
   }
-
+  /* if (getPostAccess.role) {
+  } */
   // Gem eller opdater post
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -114,31 +121,35 @@ export default function Kalender() {
     }
 
     setError("");
+    setErrorMessage("");
     setIsCreating(true);
 
-    // Upload billeder
-    const storageIds = [];
-
-    for (const image of selectedImage) {
-      const uploadUrl = await generateUploadUrl();
-
-      const result = await fetch(uploadUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": image.type,
-        },
-        body: image,
-      });
-
-      const data = await result.json();
-
-      storageIds.push(data.storageId);
-    }
-
     try {
+      // Upload billeder
+      const storageIds = [];
+
+      for (const image of selectedImage) {
+        const uploadUrl = await generateUploadUrl();
+
+        const result = await fetch(uploadUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": image.type,
+          },
+          body: image,
+        });
+
+        const data = await result.json();
+
+        storageIds.push(data.storageId);
+      }
+
+      // Datoen for posten
       const postDate = `${aar}-${maaned + 1}-${valgtDag}`;
 
+      // Gem eller opdater posten
       await savePost({
+        postId: valgtPost?._id,
         title: trimmedTitle,
         description: description.trim() || undefined,
         date: postDate,
@@ -147,8 +158,13 @@ export default function Kalender() {
         images: [...(valgtPost?.images ?? []), ...storageIds],
       });
 
+      // Hvis det lykkedes
+      setErrorMessage("");
       setSelectedImage([]);
       setValgtDag(null);
+    } catch (error) {
+      // Hvis brugeren ikke har adgang
+      setErrorMessage("Du har ikke adgang til at redigere dette opslag.");
     } finally {
       setIsCreating(false);
     }
@@ -349,8 +365,14 @@ export default function Kalender() {
 
                 {/* Gem / slet opslag */}
                 <div className="flex shrink-0 items-center justify-between pt-2 md:pt-4">
-                  {error ? (
-                    <p className="text-sm text-red-600">{error}</p>
+                  {error || errorMessage ? (
+                    <div className="flex flex-col gap-1 text-sm text-red-600">
+                      {error && <p>{error}</p>}
+
+                      {errorMessage && (
+                        <p className="font-semibold">{errorMessage}</p>
+                      )}
+                    </div>
                   ) : (
                     <span />
                   )}
@@ -507,3 +529,5 @@ export default function Kalender() {
     </div>
   );
 }
+
+//

@@ -39,8 +39,27 @@ export default defineSchema({
       v.literal("Alberte"),
       v.literal("Begge")
     ),
-  }).index("by_date", ["date"]),
+
+    ownerId: v.optional(v.id("users")),
+
+  })
+    .index("by_date", ["date"])
+    .index("by_owner", ["ownerId"]),
+
+
+  postAccess: defineTable({
+    ownerId: v.id("users"),
+    viewerId: v.id("users"),
+    role: v.union(
+      v.literal("Læser"),
+      v.literal("Rediger"),
+  
+    ),
+    // Roller på dansk, kan være ejer, ser mm
+  })
+    .index("by_viewer", ["viewerId"])
+    .index("by_owner_viewer", [
+      "ownerId",
+      "viewerId"
+    ]),
 });
-
-
-

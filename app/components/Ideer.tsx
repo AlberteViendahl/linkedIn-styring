@@ -3,6 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState, FormEvent } from "react";
+import { Doc } from "@/convex/_generated/dataModel";
 
 export default function Ideer() {
   const createIdea = useMutation(api.ide.createIdea);
@@ -77,7 +78,7 @@ export default function Ideer() {
       </form>
 
       <div className="mt-6 flex  flex-col gap-3">
-        {ideas?.map((idea) => (
+        {ideas?.map((idea: Doc<"idea">) => (
           <div
             key={idea._id}
             className="w-full rounded-lg border border-pink-300 bg-white p-3"
@@ -122,10 +123,10 @@ export default function Ideer() {
               </>
             ) : (
               <>
-                <h3 className="break-words font-bold">{idea.title}</h3>
+                <h3 className="wrap-break-words font-bold">{idea.title}</h3>
 
                 {idea.description && (
-                  <p className="break-words whitespace-pre-wrap text-sm text-gray-600">
+                  <p className="wrap-break-words whitespace-pre-wrap text-sm text-gray-600">
                     {idea.description}
                   </p>
                 )}

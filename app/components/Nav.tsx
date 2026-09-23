@@ -2,58 +2,109 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuthActions } from "@convex-dev/auth/react";
+
+import Adgang from "./Adgang";
 
 export default function Nav() {
   const pathname = usePathname();
-  const { signOut } = useAuthActions();
-
-  const handleSignOut = async () => {
-    await signOut();
-    window.location.href = "/Login";
-  };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 sm:justify-around sm:px-0 sm:py-0">
-      <Link href="/" className="text-base font-bold sm:m-5 sm:text-xl">
-        LinkedIn Styring
-      </Link>
-
-      <div className="flex flex-wrap items-center gap-1 sm:m-6 sm:gap-2">
+    <nav className="border-b border-pink-100 bg-white px-4 py-3">
+      <div
+        className="
+          mx-auto
+          grid
+          max-w-7xl
+          grid-cols-2
+          items-center
+          gap-3
+          md:grid-cols-[1fr_auto_1fr]
+        "
+      >
+        {/* Venstre */}
         <Link
           href="/"
-          className={`rounded-lg px-2 py-1 text-sm sm:p-2 sm:text-base ${
-            pathname === "/" ? "font-bold" : ""
-          }`}
+          className="
+            justify-self-start
+            text-base
+            font-bold
+            whitespace-nowrap
+            sm:text-lg
+            md:text-xl
+          "
         >
-          Kalender
+          LinkedIn Styring
         </Link>
 
-        <Link
-          href="/Ideer"
-          className={`rounded-lg px-2 py-1 text-sm sm:p-2 sm:text-base ${
-            pathname === "/Ideer" ? "font-bold" : ""
-          }`}
+        {/* Midten */}
+        <div
+          className="
+            order-3
+            col-span-2
+            flex
+            items-center
+            justify-center
+            gap-1
+            md:order-none
+            md:col-span-1
+            md:gap-2
+            md:justify-self-center
+          "
         >
-          Ideer
-        </Link>
+          <Link
+            href="/"
+            className={`
+              rounded-lg
+              px-2
+              py-2
+              text-sm
+              transition
+              sm:px-3
+              sm:text-base
+              ${pathname === "/" ? " font-bold" : ""}
+            `}
+          >
+            Kalender
+          </Link>
 
-        <Link
-          href="/Retningslinjer"
-          className={`rounded-lg px-2 py-1 text-sm sm:p-2 sm:text-base ${
-            pathname === "/Retningslinjer" ? "font-bold" : ""
-          }`}
-        >
-          Retningslinjer
-        </Link>
+          <Link
+            href="/Ideer"
+            className={`
+              rounded-lg
+              px-2
+              py-2
+              text-sm
+              transition
+              sm:px-3
+              sm:text-base
+              ${pathname === "/Ideer" ? " font-bold" : ""}
+            `}
+          >
+            Ideer
+          </Link>
 
-        <button
-          className="ml-1 rounded-lg border border-pink-300 bg-white px-2 py-1.5 text-sm shadow hover:bg-pink-50 sm:ml-3 sm:px-3 sm:py-2 sm:text-base"
-          onClick={handleSignOut}
-        >
-          Log ud
-        </button>
+          <Link
+            href="/Retningslinjer"
+            className={`
+              rounded-lg
+              px-2
+              py-2
+              text-sm
+              transition
+              sm:px-3
+              sm:text-base
+              ${pathname === "/Retningslinjer" ? "font-bold" : ""}
+            `}
+          >
+            Retningslinjer
+          </Link>
+        </div>
+
+        {/* Højre */}
+        <div className="justify-self-end">
+          <Adgang />
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }
