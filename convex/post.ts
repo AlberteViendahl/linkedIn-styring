@@ -31,7 +31,6 @@ export const createPost = mutation({
   },
 });
 
-
 // Hent posts brugeren må se
 export const getPosts = query({
   args: {},
@@ -94,7 +93,6 @@ export const getPosts = query({
     );
   },
 });
-
 
 // Gem/opdater post
 export const savePost = mutation({
@@ -212,7 +210,6 @@ export const savePost = mutation({
   },
 });
 
-
 // Slet post
 export const deletePost = mutation({
   args: {
@@ -272,7 +269,6 @@ export const deletePost = mutation({
   },
 });
 
-
 // Lav upload URL til billeder
 export const generateUploadUrl = mutation({
   args: {},
@@ -288,7 +284,6 @@ export const generateUploadUrl = mutation({
     return await ctx.storage.generateUploadUrl();
   },
 });
-
 
 // Slet billede fra post
 export const deletePostImage = mutation({
@@ -333,7 +328,6 @@ export const deletePostImage = mutation({
     });
   },
 });
-
 
 // Giv en anden bruger adgang via email
 export const givePostAccess = mutation({
@@ -515,4 +509,73 @@ async function canAccessPost(
   return access !== null;
 }
 
+export const updatePostAccessRole = mutation({
+  args: {
+    accessId: v.id("postAccess"),
+
+    role: v.union(
+      v.literal("Læser"),
+      v.literal("Rediger")
+    ),
+  },
+
+  handler: async (ctx, args) => {
+
+    // Find den bruger der er logget ind
+    const ownerId = await getAuthUserId(ctx);
+
+    if (!ownerId) {
+      throw new Error("Du skal være logget ind");
+    }
+
+    // Find adgangsrecorden
+    const access = await ctx.db.get(
+      "postAccess",
+      args.accessId
+    );
+
+    if (!access) {
+      throw new Error("Adgang findes ikke");
+    }
+
+    // Kun ejeren må ændre rollen
+    if (access.ownerId !== ownerId) {
+      throw new Error(
+        "Du må ikke ændre denne rolle"
+      );
+    }
+
+    // Ændrer rollen
+    await ctx.db.patch(
+      args.accessId,
+      {
+        role: args.role,
+      }
+    );
+  },
+});
+
 // Role (Ejer)
+//mutation skal gøre en ting - min gør to ting, det er nogo. Det er bedre at have flere mutations . savepost når man upatere noget giver ikke mening.
+// Små bogstaver i min routes ideer, login mm.
+//Lidt overkill med fjernAccess i sit eget komponent.
+//Auth sender en token ud, hver com har et unikId.
+// tidsbegræning er i config -  timer til uger der er ikke rigtig 
+// jwt korte token, 
+// refresh token er der meget længere
+//jwt holder mig logget ind, hver gang den udløber
+
+// getAuthUserId er jwt token 
+
+
+/* import { convexAuth } from "@convex-dev/auth/server";
+
+export const { auth, signIn, signOut, store } = convexAuth({
+  providers: [
+    // your providers...
+  ],
+
+  jwt: {
+    durationMs: 60 * 60 * 1000, // 1 hour
+  },
+}); */

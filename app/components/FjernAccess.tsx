@@ -7,6 +7,7 @@ export default function PostAccessList() {
   const accesses = useQuery(api.post.getPostAccess);
 
   const removeAccess = useMutation(api.post.removePostAccess);
+  const updatePostAccessRole = useMutation(api.post.updatePostAccessRole);
 
   if (!accesses) {
     return <p>Loading...</p>;
@@ -28,7 +29,19 @@ export default function PostAccessList() {
           "
         >
           <p>{access.email}</p>
-          <span className="text-sm text-gray-500">Rolle: {access.role}</span>
+          <select
+            value={access.role}
+            onChange={(event) =>
+              updatePostAccessRole({
+                accessId: access.accessId,
+                role: event.target.value as "Læser" | "Rediger",
+              })
+            }
+            className="rounded border px-2 py-1 text-sm"
+          >
+            <option value="Læser">Læser</option>
+            <option value="Rediger">Rediger</option>
+          </select>
 
           <button
             onClick={async () => {
